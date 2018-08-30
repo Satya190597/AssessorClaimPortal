@@ -866,5 +866,17 @@
 			mysqli_close($con);
 			return $result;
 		}
+		#----------------------------------------------------------------------------------
+		# Delete claim batch before submitting the claim form 
+		#----------------------------------------------------------------------------------
+		public function deleteClaimBatch($ID)
+		{
+			$myconnection 	= 	new connection();
+			$con 			= 	$myconnection->getConnection();
+			$query 			= 	"DELETE FROM claim_batch WHERE ID=$ID AND claimID=-1";
+			$result			=	$con->query($query);
+			mysqli_close($con);
+			return $result;
+		}
 	}
 ?>

@@ -1,7 +1,6 @@
 <?php
 	include_once 'connection/connection.php';
 	include_once 'class/controller.php';
-	session_start();
 	$obj = new accessorOperations();
 	$ID 		=	$_POST['ID'];
 	$BATCH 		=	$_POST['batch'];

@@ -694,8 +694,8 @@
 								</tr>
 								<tr>
 									<td colspan="7">
-										<input type="button" name="" value="Update" id="<?php echo $row['ID'] ?>" onclick="updateClaim(this.id);"/>
-										<a href="#">Delete</a>
+										<input type="button" value="Update" onclick="updateClaim(<?php echo $row['ID']; ?>);"/>
+										<a href="delete_claim_batch.php?id=<?php echo $row['ID']; ?>">Delete</a>
 									</td>
 								</tr>
 								<?php
