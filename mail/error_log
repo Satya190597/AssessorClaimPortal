@@ -1,0 +1,2 @@
+[06-Aug-2018 22:13:29 Etc/GMT] PHP Notice:  Undefined index: user_type in /home/compete1/public_html/accessor/mail/sendLink.php on line 3
+[10-Aug-2018 08:48:05 Etc/GMT] PHP Notice:  Undefined index: user_type in /home/compete1/public_html/accessor/mail/sendLink.php on line 3

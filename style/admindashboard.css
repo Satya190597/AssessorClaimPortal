@@ -1,0 +1,69 @@
+body
+{
+	height: 100%;
+	width: 100%;
+	background: linear-gradient(to top left,#fdfefe,#f2f3f4);
+}
+.wrapper
+{
+	margin-top: 2%;
+	margin-left: 5%;
+	margin-right: 5%;
+	background-color: #fdfefe;
+	max-width: 1000px;
+	max-height: 1000px;
+	min-width: 1000px;
+	min-height: 900px;
+	margin-bottom: 2%;
+	border-color: #2e4053;
+	border-style: solid;
+	border-width: 3px;
+	border-radius: 5px;
+}
+.header
+{
+	background-color: #34495e;
+	color: white;
+	padding-top: 2%;
+	padding-bottom: 2%;
+}
+.footer
+{
+	background-color: #17202a;
+	color: white;
+	padding-top: 2%;
+	padding-bottom: 2%;
+}
+.content
+{
+	width:100%;
+	overflow: scroll;
+	overflow-x: hidden;
+	min-height: 700px;
+	max-height: 700px;
+}
+.welcome
+{
+	font-weight: bold;
+	float: left;
+	color: #d35400;
+}
+.homedetail
+{
+	float: left;
+}
+.searchControl
+{
+	float: left;
+	color: #d35400;
+}
+.searchControl td
+{
+	padding: 5px;
+}
+.searchText
+{
+	background-color: #34495e;
+	color: #fdfefe;
+}
+

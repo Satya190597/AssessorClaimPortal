@@ -1,0 +1,213 @@
+body
+{
+	width:100%;
+    	background-color: #cacfd2;
+}
+
+.addkyc
+{
+	max-width: 800px;
+	min-width: 800px;
+	background-color: #fbfcfc;
+	margin-top: 50px;
+	margin-bottom: 50px;
+	padding: 7px;
+	border-radius: 5px;
+}
+.kyctable
+{
+	font-weight: bold;
+	width:100%;
+	color: #5d6d7e;
+}
+.kyctable td
+{
+	padding: 5px;
+}
+.pic_url
+{
+	max-width:400px;
+	overflow:hidden;
+}
+.voterid_url
+{	
+	max-width: 300px;
+	overflow:hidden;
+}
+.pan_url
+{	
+	max-width: 300px;
+	overflow:hidden;
+}
+.adhar_url
+{	
+	max-width: 300px;
+	overflow:hidden;
+}
+.error
+{
+	color: #922b21;
+}
+.submit
+{
+	font-weight: bolder;
+}
+.accessorWrapper
+{
+	background:linear-gradient(to bottom right,white,#FEF9E7);
+	background-size: 100% 1200px;
+	max-height:1200px;
+	min-height:1200px;
+}
+.info
+{
+	background-color:#212f3c;
+	color: white;
+	padding: 10px;
+}
+.header
+{
+	background:linear-gradient(to bottom right,#2980B9,#7FB3D5);
+	color: white;
+	padding: 20px;
+	margin:0px;
+}
+.footer
+{
+	background-color: #283747;
+	color: white;
+	padding: 20px;
+}
+.mynav
+{
+	margin-top:0px;
+	background-color:#eaecee;
+	padding: 10px;
+	margin-bottom:5px;
+}
+.kycdetaildiv
+{
+	padding: 10px;
+	border-radius: 5px;
+	background-color: #2471A3;
+}
+.kycdetailtable
+{
+	
+	width:100%;
+	color: white;
+	background: #2471A3;
+	border: solid 5px white;
+	border-radius: 5px;
+}
+.kycdetailtable td
+{
+	padding: 10px;
+	font-weight: bold;
+}
+.print
+{
+	font-weight: bold;
+	margin: 10px;
+}
+.claimContainerForm
+{
+	background-color: #455A64;
+	padding: 10px;
+	border-radius: 5px;
+}
+.claimform
+{
+	background-color: #607D8B;
+}
+.claimform td
+{
+	border: solid white 2px;
+	padding: 8px;
+	color: white;
+	font-family: arial;
+	font-weight: bold;
+}
+.subwrapper
+{
+	min-height: 1100px;
+	max-height: 1100px;
+	overflow-y: scroll;
+}
+.claimdetailtable
+{
+	color: #34495e;
+	font-weight: bold;
+}
+.requestform
+{
+	color: white;
+}
+.requestform td
+{
+	padding: 4px;
+	font-weight: bold;
+}
+.warning_claim
+{
+	background-color: red;
+	color: white;
+	font-weight: bold;
+	padding: 4px;
+}
+.notice_claim
+{
+	background-color: yellow;
+	color: black;
+	font-weight: bold;
+	
+	text-align: left;
+	padding: 4px;
+}
+.claim_save_message
+{
+	background-color: #00CC33;
+	color: white;
+	font-weight: bold;
+	padding: 4px;
+	text-align: left;
+}
+.request_box
+{
+	background-color: #2ECC71;
+	padding: 10px;
+	max-width: 500px;
+	min-width: 500px;
+	margin: 10px;
+	border-radius: 5px;
+	border: solid 5px #117A65;
+}
+.repliesdiv
+{
+	width: 500px;
+	height: 400px;
+	overflow: scroll;
+	overflow-x: hidden;
+	background-color: #FF7043;
+	border: solid 5px #BF360C;
+	border-radius: 5px;
+}
+.repliestable
+{
+	font-weight: bolder;
+	color: white;
+}
+.repliestable td
+{
+	padding: 10px;
+}
+.upload_image_link
+{
+	text-decoration: none;
+	color: white;
+}
+.upload_image_link:hover
+{
+	text-decoration: none;
+	color: white;
+}

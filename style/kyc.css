@@ -1,0 +1,14 @@
+.kycdetailtable
+{
+	
+	width:700px;
+	color: #2e4053;
+	border-radius:5px;
+	font-family: arial;
+}
+.kycdetailtable td
+{
+	border: solid #2471a3 2px;
+	padding: 10px;
+	font-weight: bold;
+}
