@@ -655,8 +655,6 @@
 										<input type="hidden" 
 										value="<?php echo $row['ID']; ?>" 
 										id="<?php echo $row['ID']; ?>ID" />
-									</td>
-									<td>
 										<input type="text" 
 										value="<?php echo $row['batchNo']; ?>"		
 										class="form-control"
@@ -675,7 +673,7 @@
 										id="<?php echo $row['ID']; ?>trade"/>
 									</td>
 									<td>
-										<input type="text" 
+										<input type="date" 
 										value="<?php echo $row['doa']; ?>"			
 										class="form-control"
 										id="<?php echo $row['ID']; ?>date"/>

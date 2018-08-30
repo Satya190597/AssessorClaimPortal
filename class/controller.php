@@ -852,11 +852,19 @@
 		#----------------------------------------------------------------------------------
 		# Update claim batch before submitting the claim form 
 		#----------------------------------------------------------------------------------
-		public function updateClaimBatch($ID,$NAME,$SECTOR,$TRADE,$CANDIDATE,$AMOUNT)
+		public function updateClaimBatch($ID,$BATCH,$SECTOR,$TRADE,$CANDIDATE,$DATE,$AMOUNT)
 		{
-			$myconnection 	= new connection();
-			$con 			= $myconnection->getConnection();
-			$query 			= "UPDATE "
+			$myconnection 	= 	new connection();
+			$con 			= 	$myconnection->getConnection();
+			$query 			= 	"UPDATE claim_batch SET batchNo='$BATCH',
+								sector='$SECTOR',
+								trade='$TRADE',
+								candidates=$CANDIDATE,
+								amountClaim=$AMOUNT,
+								doa='$DATE' WHERE ID=$ID AND claimID=-1";
+			$result			=	$con->query($query);
+			mysqli_close($con);
+			return $result;
 		}
 	}
 ?>
