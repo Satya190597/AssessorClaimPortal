@@ -110,23 +110,31 @@ body
 	font-weight: bold;
 	margin: 10px;
 }
+.menu
+{
+	width: 700px;
+}
 .claimContainerForm
 {
-	background-color: #455A64;
-	padding: 10px;
-	border-radius: 5px;
+	background-color: 	#34495E;
+	padding-top: 		10px;
+	padding-bottom: 	10px;
+	padding-left: 		3px;
+	padding-right: 		3px;
+	border-radius: 		5px;
+	margin-top: 		3%;
 }
 .claimform
 {
-	background-color: #607D8B;
+	background-color: 	#FDFEFE;
+	color: 				#34495E;
 }
 .claimform td
 {
-	border: solid white 2px;
-	padding: 8px;
-	color: white;
-	font-family: arial;
-	font-weight: bold;
+	border: 			solid #95A5A6 3px;
+	padding: 			8px;
+	font-family: 		arial;
+	font-weight: 		bold;
 }
 .subwrapper
 {

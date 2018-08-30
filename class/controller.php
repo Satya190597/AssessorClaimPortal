@@ -360,9 +360,29 @@
                		       $con->query($query);
 			}
 		}
-		/*
-			Save Claim Batch
-		*/
+		#------------------------------------------------------------------------------------------------------------
+		#	Insert Claim Batch
+		# 	Set claim id to -1
+		#------------------------------------------------------------------------------------------------------------
+		public function insertClaimBatch($batchno,$sector,$trade,$doa,$candidates,$amount,$adhar)
+		{
+			$query = "INSERT INTO claim_batch(ID,claimID,batchNo,sector,trade,doa,candidates,amountClaim,adhar) VALUES(null,-1,'$batchno','$sector','$trade','$doa',$candidates,$amount,$adhar)";
+			$myconnection = new connection();
+			$con = $myconnection->getConnection();
+			return $con->query($query);
+		}
+		#------------------------------------------------------------------------------------------------------------
+		#	Select Claim for claimid -1 and for specific user
+		#------------------------------------------------------------------------------------------------------------
+		public function selectClaimBatch($adhar)
+		{
+			$query 			= "SELECT * FROM claim_batch WHERE claimID=-1 AND adhar=$adhar";
+			$myconnection	= new connection();
+			$con 			= $myconnection->getConnection();
+			$result 		=  $con->query($query);
+			mysqli_close($con);
+			return $result;
+		}
 		public function SaveClaimBatch($dataarray,$batchdataarry,$length,$claimID)
 		{
 			$this->DeleteTempClaim($claimID);
@@ -828,6 +848,15 @@
 			$con = $myconnection->getConnection();
 			$query = "SELECT * FROM  temp_batch_image WHERE claimID=$claim_id";
 			return $con->query($query);
+		}
+		#----------------------------------------------------------------------------------
+		# Update claim batch before submitting the claim form 
+		#----------------------------------------------------------------------------------
+		public function updateClaimBatch($ID,$NAME,$SECTOR,$TRADE,$CANDIDATE,$AMOUNT)
+		{
+			$myconnection 	= new connection();
+			$con 			= $myconnection->getConnection();
+			$query 			= "UPDATE "
 		}
 	}
 ?>

@@ -7,6 +7,7 @@
   		<script src="lib/popper.min.js"></script>
   		<script src="lib/bootstrap.min.js"></script>
   		<script src="javascript/KYCValidation.js"></script>
+  		<script src="javascript/updateClaimBatch.js"></script>
 		<script src="javascript/claim.js"></script>
 		<script src="javascript/home.js"></script>
 		<?php
@@ -479,632 +480,252 @@
                                        		
                                        </div>
 				    </div>
-				    <div id="menu2" class="container tab-pane fade claimContainerForm"><br>
 
-				     <!-- <h3 style="text-align:left;color:#ba4a00;font-weight:bold">Claim Form</h3> -->
+				    <!-- ------------------------------ Claim Form ------------------------------ -->
+
+				    <div id="menu2" class="tab-pane fade claimContainerForm" style="width:80%"><br>
 				      <div>
-				      <?php
-						if(isset($_GET["claimsavemessage"]))
-						{
-							echo "<div class=\"claim_save_message\"><center><strong>".$_GET['claimsavemessage']."</strong></center></div>";
-						}
-						$object = new accessorOperations();
-						$result = $object->SaveClaimGet($adhar);
-						
-					?>
 				      	<form method="POST" action="addClaim.php" enctype="multipart/form-data">
-				      	
-				      	<!-- +++++++++++++++++++++++++++++   CONDITION TO CHECK FOR NEW CLAIM OR NOT +++++++++++++++++++++++++++++ -->
-				      	
-				      	<?php 
-				      		if(mysqli_num_rows($result)==0)
-						{
-					?>
-						<table class="claimform">
-							<tr>
+							<table class="claimform">
+								<tr>
+									<td colspan="7">
+										<center>
+											<h4>Centurion University Of Technology & Management</h4>
+											<p><b>School Of Vocational Education & Training</b></br>
+											<b>Assessment / Coordination Fees Claim Form</b><p>
+										</center>
+									</td>
+								</tr>
+								<tr>
+									<td colspan="7"><h3><b>Claim Form</b></h3></td>
+								</tr>
+								<tr>
+									<td>To</td>
+									<td colspan="2">
+										<input type="text" name="to" style="width:100%"  class="form form-control" value="National Head Skill Assessment and Certification Cell" readonly="true"/><br>
+									</td>
+									<td>Date</td>
+									<td>
+										<input type="date" name="date"  class="form form-control"/>
+									</td>
+									<td>For the month of</td>
+									<td>
+										<select name="forMonthOf" class="form form-control" id="forMonthOf" onchange="checkDate()">
+											<option>-- SELECT --</option>
+											<option value="JANUARY">JANUARY</option>
+											<option value="FEBRUARY">FEBRUARY</option>
+											<option value="MARCH">MARCH</option>
+											<option value="APRIL">APRIL</option>
+											<option value="MAY">MAY</option>
+											<option value="JUNE">JUNE</option>
+											<option value="JULY">JULY</option>
+											<option value="AUGUST">AUGUST</option>
+											<option value="SEPTEMBER">SEPTEMBER</option>
+											<option value="OCTOBER">OCTOBER</option>
+											<option value="NOVEMBER">NOVEMBER</option>
+											<option value="DECEMBER">DECEMBER</option>
+										</select>
+										<br>
+										<small id="date_error" style="display:none">Your Claim Date Is Invalid</small>
+									</td>
+								</tr>
+								<tr>
+									<td colspan="2">CC</td>
+									<td colspan="2">
+										<input type="text" name="cc" style="width:100%"  class="form form-control" value="Chief Finance Officer" readonly="true"/>
+									</td>
+									<td>Base Location</td>
+									<td colspan="2">
+										<input type="text" name="baseLocation" style="width:100%"  class="form form-control"/>
+									</td>
+								</tr>
+								<tr>
+									<td colspan="2">Project claim under</td>
+									<td colspan="2">
+										<input type="text" name="projectClaimUnder" style="width:100%"  class="form form-control"/>
+									</td>
+									<td>Destination Location</td>
+									<td colspan="2">
+										<input type="text" name="destinationLocation" style="width:100%"  class="form form-control"/>
+									</td>
+								</tr>
+								<tr>
+									<td colspan="2">Name Of The Candidate</td>
+									<td colspan="2">
+										<input type="text" 
+										name="nameOfCandidate" 
+										style="width:100%" 
+										readonly="true" 
+										value="<?php echo $dataarray[0] ?>"
+										class="form form-control" /></td>
+									<td>Contact Number</td>
+									<td colspan="2">
+										<input type="text" 
+										name="contactNumber" 
+										style="width:100%" 
+										value="<?php echo $dataarray[19] ?>"
+										readonly="true" class="form form-control"
+										/>
+									</td>
+								</tr>
+								<tr>
+									<td colspan="2">Bank Name</td>
+									<td colspan="1">
+										<input type="text" 
+										name="bankName" 
+										style="width:100%" 
+										readonly="true" 
+										value="<?php echo $dataarray[16] ?>"
+										class="form form-control"/></td>
+									<td>Bank Branch</td>
+									<td colspan="1">
+										<input type="text" 
+										name="bankBranch" 
+										style="width:100%" 
+										readonly="true" 
+										value="<?php echo $dataarray[17] ?>" class="form form-control"/>
+									</td>
+									<td>PAN Number</td>
+									<td colspan="1">
+										<input type="text" 
+										name="panNumber" 
+										style="width:100%" 
+										readonly="true" 
+										value="<?php echo $dataarray[10] ?>"
+										class="form form-control"/></td>
+								</tr>
+								<tr>
+									<td colspan="2">Account Number</td>
+									<td colspan="2">
+										<input type="text" 
+										name="accountNumber" 
+										style="width:100%" 
+										readonly="true" 
+										value="<?php echo $dataarray[15] ?>" class="form form-control"/>
+									</td>
+									<td>IFSC Code</td>
+									<td colspan="2">
+										<input type="text" 
+										name="ifcCode" 
+										style="width:100%" 
+										readonly="true" 
+										value="<?php echo $dataarray[18] ?>" class="form form-control"/>
+									</td>
+								</tr>
+								<tr>
+									<td colspan="7"><h3><b>Details batch Assessed</b></h3></td>
+								<tr>
+								<tr>
+									<td>Batch Number</td>
+									<td>Sector</td>
+									<td>Trade</td>
+									<td>Date Of Assessment</td>
+									<td>Number Of Candidate</td>
+									<td>Amount</td>
+									<td>Add</td>
+								</tr>
+								<tr>
+									<td>
+										<input type="text"		name="batch"				class="form-control" />
+									</td>
+									<td>
+										<input type="text"		name="sector"				class="form-control" />
+									</td>
+									<td>
+										<input type="text"		name="trade" 				class="form-control" />
+									</td>
+									<td>
+										<input type="date"		name="date_of_assessment" 	class="form-control" />
+									</td>
+									<td>
+										<input type="text"		name="number_of_candidate"  class="form-control" />
+									</td>
+									<td>
+										<input type="text"		name="amount" 				class="form-control" />
+									</td>
+									<td><input type="submit"	name="add" 		class="btn btn-primary"		value="Add Batch"/></td>
+								</tr>
+								<?php
+									$result = $object->selectClaimBatch($adhar);
+									while($row = mysqli_fetch_assoc($result))
+									{
+								?>
+								<tr>
+									<td>
+										<input type="hidden" 
+										value="<?php echo $row['ID']; ?>" 
+										id="<?php echo $row['ID']; ?>ID" />
+									</td>
+									<td>
+										<input type="text" 
+										value="<?php echo $row['batchNo']; ?>"		
+										class="form-control"
+										id="<?php echo $row['ID']; ?>batch"/>
+									</td>
+									<td>
+										<input type="text" 
+										value="<?php echo $row['sector']; ?>" 		
+										class="form-control"
+										id="<?php echo $row['ID']; ?>sector"/>
+									</td>
+									<td>
+										<input type="text" 
+										value="<?php echo $row['trade']; ?>" 		
+										class="form-control"
+										id="<?php echo $row['ID']; ?>trade"/>
+									</td>
+									<td>
+										<input type="text" 
+										value="<?php echo $row['doa']; ?>"			
+										class="form-control"
+										id="<?php echo $row['ID']; ?>date"/>
+									</td>
+									<td>
+										<input type="text" 
+										value="<?php echo $row['candidates']; ?>" 	
+										class="form-control"
+										id="<?php echo $row['ID']; ?>candidate"/>
+									</td>
+									<td>
+										<input type="text" 
+										value="<?php echo $row['amountClaim']; ?>"	
+										class="form-control"
+										id="<?php echo $row['ID']; ?>amount"/>
+									</td>
+									<td><a href="#">Upload Files</a></td>
+								</tr>
+								<tr>
+									<td colspan="7">
+										<input type="button" name="" value="Update" id="<?php echo $row['ID'] ?>" onclick="updateClaim(this.id);"/>
+										<a href="#">Delete</a>
+									</td>
+								</tr>
+								<?php
+									}
+								?>
 								<td colspan="7">
-									<center>
-										<h4>Centurion University Of Technology & Management</h4>
-										<p><b>School Of Vocational Education & Training</b></br>
-										<b>Assessment / Coordination Fees Claim Form</b><p>
-									</center>
+									<p style="color:#C0392B">
+										Further to my above claim, I hereby authorize the paying/disbursing authority to deduct/reduce my claim as per the Management fixation of Cap/Maximum limit from time to time.
+										The above information furnished by me is true to my knowledge & the documents attached are in order.
+										If any deviation found at later stage during audit, I will be held responsible
+									</p>
 								</td>
 							</tr>
 							<tr>
-								<td colspan="7"><h3><b>Claim Form</b></h3></td>
-							</tr>
-				<tr>
-					<td>To</td>
-					<td colspan="2">
-						<input type="text" name="to" style="width:100%" required class="form form-control" value="National Head Skill Assessment and Certification Cell" readonly="true"/><br>
-						<!-- Remove <small>Head Skill Assessment & Certification</small> -->
-					</td>
-					<td>Date</td>
-					<td>
-						<input type="date" name="date" required class="form form-control"/>
-					</td>
-					<td>For the month of</td>
-					<td>
-						<!-- <input type="date" name="forMonthOf" id="forMonthOf" required class="form form-control" onchange="checkDate()" /> -->
-						<!-- Condition Disable for two days select name="forMonthOf" required class="form form-control" onchange="checkDate()" id="forMonthOf" -->
-						<select name="forMonthOf" required class="form form-control" id="forMonthOf" onchange="checkDate()">
-							<option>-- SELECT --</option>
-							<option value="JANUARY">JANUARY</option>
-							<option value="FEBRUARY">FEBRUARY</option>
-							<option value="MARCH">MARCH</option>
-							<option value="APRIL">APRIL</option>
-							<option value="MAY">MAY</option>
-							<option value="JUNE">JUNE</option>
-							<option value="JULY">JULY</option>
-							<option value="AUGUST">AUGUST</option>
-							<option value="SEPTEMBER">SEPTEMBER</option>
-							<option value="OCTOBER">OCTOBER</option>
-							<option value="NOVEMBER">NOVEMBER</option>
-							<option value="DECEMBER">DECEMBER</option>
-						</select>
-						<br>
-						<small id="date_error" style="display:none">Your Claim Date Is Invalid</small>
-					</td>
-				</tr>
-				<tr>
-					<td colspan="2">CC</td>
-					<td colspan="2">
-						<input type="text" name="cc" style="width:100%" required class="form form-control" value="Chief Finance Officer" readonly="true"/>
-					</td>
-					<td>Base Location</td>
-					<td colspan="2">
-						<input type="text" name="baseLocation" style="width:100%" required class="form form-control"/>
-					</td>
-				</tr>
-				<tr>
-					<td colspan="2">Project claim under</td>
-					<td colspan="2">
-						<input type="text" name="projectClaimUnder" style="width:100%" required class="form form-control"/>
-					</td>
-					<td>Destination Location</td>
-					<td colspan="2">
-						<input type="text" name="destinationLocation" style="width:100%" required class="form form-control"/>
-					</td>
-				</tr>
-				<tr>
-					<td colspan="2">Name Of The Candidate</td>
-					<td colspan="2">
-						<input type="text" 
-						name="nameOfCandidate" 
-						style="width:100%" 
-						readonly="true" 
-						value="<?php echo $dataarray[0] ?>"
-						class="form form-control" /></td>
-					<td>Contact Number</td>
-					<td colspan="2">
-						<input type="text" 
-						name="contactNumber" 
-						style="width:100%" 
-						required
-						value="<?php echo $dataarray[19] ?>"
-						readonly="true" class="form form-control"
-						/>
-					</td>
-				</tr>
-				<tr>
-					<td colspan="2">Bank Name</td>
-					<td colspan="1">
-						<input type="text" 
-						name="bankName" 
-						style="width:100%" 
-						readonly="true" 
-						value="<?php echo $dataarray[16] ?>"
-						class="form form-control"/></td>
-					<td>Bank Branch</td>
-					<td colspan="1">
-						<input type="text" 
-						name="bankBranch" 
-						style="width:100%" 
-						readonly="true" 
-						value="<?php echo $dataarray[17] ?>" class="form form-control"/>
-					</td>
-					<td>PAN Number</td>
-					<td colspan="1">
-						<input type="text" 
-						name="panNumber" 
-						style="width:100%" 
-						readonly="true" 
-						value="<?php echo $dataarray[10] ?>"
-						class="form form-control"/></td>
-				</tr>
-				<tr>
-					<td colspan="2">Account Number</td>
-					<td colspan="2">
-						<input type="text" 
-						name="accountNumber" 
-						style="width:100%" 
-						readonly="true" 
-						value="<?php echo $dataarray[15] ?>" class="form form-control"/>
-					</td>
-					<td>IFSC Code</td>
-					<td colspan="2">
-						<input type="text" 
-						name="ifcCode" 
-						style="width:100%" 
-						readonly="true" 
-						value="<?php echo $dataarray[18] ?>" class="form form-control"/>
-					</td>
-				</tr>
-				<tr>
-					<td colspan="6"><h3><b>Details batch Assessed</b></h3></td>
-					<td rowspan="2">Amount Claim</td>
-				</tr>
-				<tr>
-					<td>Slno</td>
-					<td>Batch Number</td>
-					<td>Sector</td>
-					<td>Trade</td>
-					<td>Date of Assessment</td>
-					<td>Number of Candidate</td>
-				</tr>
-				<tr>
-					<td>1</td>
-					<td><input type="text" name="batchNumber_one" style="width:100%" class="form form-control" required /></td>
-					<td><input type="text" name="sector_one" style="width:100%" class="form form-control" required /></td>
-					<td><input type="text" name="trade_one" style="width:100%" class="form form-control" required /></td>
-					<td><input type="date" name="dateassessment_one" style="width:100%" class="form form-control" required /></td>
-					<td>
-						<input type="text" 
-						name="noofcandidate_one"
-						pattern="^[0-9]{1,11}" 
-						title="Please enter valid number" style="width:100%" class="form form-control"/>
-					</td>
-					<td>
-						<input type="text" 
-						name="amount_one"
-						id="amount_one" 
-						pattern="^[0-9][0-9.]{1,11}" 
-						title="Please enter valid number" style="width:100%" 
-						onchange="addTotal();" class="form form-control"/>
-					</td>
-				</tr>
-				<tr>
-					<td>2</td>
-					<td><input type="text" name="batchNumber_two" style="width:100%" class="form form-control"/></td>
-					<td><input type="text" name="sector_two" style="width:100%" class="form form-control"/></td>
-					<td><input type="text" name="trade_two" style="width:100%" class="form form-control"/></td>
-					<td><input type="date" name="dateassessment_two" style="width:100%" class="form form-control"/></td>
-					<td>
-						<input type="text" name="noofcandidate_two" 
-						pattern="^[0-9]{1,11}" 
-						title="Please enter valid number" style="width:100%" class="form form-control"/>
-					</td>
-					<td>
-						<input type="text" 
-						name="amount_two"
-						id="amount_two" 
-						pattern="^[0-9][0-9.]{1,11}" 
-						onchange="addTotal();"
-						title="Please enter valid number" style="width:100%" class="form form-control"/>
-					</td>
-				</tr>
-				<tr>
-					<td>3</td>
-					<td><input type="text" name="batchNumber_three" style="width:100%" class="form form-control"/></td>
-					<td><input type="text" name="sector_three" style="width:100%" class="form form-control"/></td>
-					<td><input type="text" name="trade_three" style="width:100%" class="form form-control"/></td>
-					<td><input type="date" name="dateassessment_three" style="width:100%" class="form form-control"/></td>
-					<td>
-						<input type="text" 
-						name="noofcandidate_three" 
-						pattern="^[0-9]{1,11}" 
-						title="Please enter valid number" style="width:100%" class="form form-control"/>
-					</td>
-					<td>
-						<input type="text" 
-						name="amount_three"
-						id="amount_three" 
-						pattern="^[0-9][0-9.]{1,11}" 
-						onchange="addTotal();"
-						title="Please enter valid number" style="width:100%" class="form form-control"/>
-					</td>
-				</tr>
-				<tr>
-					<td>4</td>
-					<td><input type="text" name="batchNumber_four" style="width:100%" class="form form-control"/></td>
-					<td><input type="text" name="sector_four" style="width:100%"class="form form-control" /></td>
-					<td><input type="text" name="trade_four" style="width:100%" class="form form-control"/></td>
-					<td><input type="date" name="dateassessment_four" style="width:100%" class="form form-control"/></td>
-					<td>
-						<input type="text" name="noofcandidate_four" 
-						pattern="^[0-9]{1,11}" 
-						title="Please enter valid number" style="width:100%" class="form form-control"/>
-					</td>
-					<td>
-						<input type="text" 
-						name="amount_four" 
-						id="amount_four"
-						pattern="^[0-9][0-9.]{1,11}" 
-						onchange="addTotal();"
-						title="Please enter valid number" style="width:100%" class="form form-control"/>
-					</td>
-				</tr>
-				<tr>
-					<td>5</td>
-					<td><input type="text" name="batchNumber_five" style="width:100%" class="form form-control"/></td>
-					<td><input type="text" name="sector_five" style="width:100%" class="form form-control"/></td>
-					<td><input type="text" name="trade_five" style="width:100%" class="form form-control"/></td>
-					<td><input type="date" name="dateassessment_five" style="width:100%" class="form form-control"/></td>
-					<td>
-						<input type="text" 
-						name="noofcandidate_five" 
-						pattern="^[0-9]{1,11}" 
-						title="Please enter valid number" style="width:100%" class="form form-control"/>
-					</td>
-					<td>
-						<input type="text" 
-						name="amount_five" 
-						id="amount_five"
-						pattern="^[0-9][0-9.]{1,11}" 
-						onchange="addTotal();"
-						title="Please enter valid number" style="width:100%" class="form form-control"/>
-					</td>
-				</tr>
-				<tr>
-					<td>6</td>
-					<td><input type="text" name="batchNumber_six" style="width:100%" class="form form-control"/></td>
-					<td><input type="text" name="sector_six" style="width:100%" class="form form-control"/></td>
-					<td><input type="text" name="trade_six" style="width:100%" class="form form-control"/></td>
-					<td><input type="date" name="dateassessment_six" style="width:100%" class="form form-control"/></td>
-					<td>
-						<input type="text" 
-						name="noofcandidate_six"
-						pattern="^[0-9]{1,11}" 
-						title="Please enter valid number" style="width:100%" class="form form-control"/>
-					</td>
-					<td>
-						<input type="text" 
-						name="amount_six" 
-						id="amount_six"
-						pattern="^[0-9][0-9.]{1,11}" 
-						onchange="addTotal();"
-						title="Please enter valid number" style="width:100%" class="form form-control"/>
-					</td>
-				</tr>
-				<tr>
-					<td colspan="6">Total Assessment Fee</td>
-					<td>
-						<input type="text" 
-						name="assessmentFee" 
-						id="amount"
-						style="width:100%"
-						required
-						pattern="^[0-9][0-9.]{1,11}" 
-						readonly="true" 
-						title="Please enter valid number" class="form form-control"/>
-					</td>
-				</tr>
-				<tr>
-					<td colspan="6">Less Advance Taken</td>
-					<td>
-						<input type="text" 
-						name="lessBalance" 
-						style="width:100%"
-						pattern="^[0-9][0-9.]{1,11}" 
-						title="Please enter valid number" class="form form-control" id="less" onchange="addbalance();" /></td>
-				</tr>
-				<tr>
-					<td colspan="6">Balance to (Refund / Payment)</td>
-					<td>
-						<input type="text" 
-						name="rfundBalance" 
-						style="width:100%"
-						pattern="^[0-9][0-9.]{1,11}" 
-						title="Please enter valid number" class="form form-control" id="balance" readonly="true" />
-					</td>
-				</tr>
-				<tr>
-					<td colspan="2">Amount in words</td>
-					<td colspan="5">
-						<input type="text" 
-						name="amountInWords" 
-						style="width:100%" 
-						required 
-						pattern="^[A-Za-z][A-Za-z\s]{3,75}"
-						title="Amount must be in lower case & Must be in alphabets" class="form form-control"/></td>
-				</tr>
-				<tr>
-					<!-- <td colspan="2">Upload Image One</td>
-					<td colspan="5">
-					<input type="file" name="ImageOne" class="form-control" id="ImageOne" /><br>
-					<p id="imageone_error" style="display:none">Upload Image or File Must Be Less Than 500kb</p>
-					</td> -->
-				</tr>
-				<tr>
-					<!-- <td colspan="2">Upload Image Two</td>
-					<td colspan="5">
-					<input type="file" name="claimfile" class="form-control" id="ImageTwo" /><br>
-					<p id="imagetwo_error" style="display:none">Upload Image or File Must Be Less Than 500kb</p>
-					</td> -->
-				</tr>
-				<tr>
-					<!-- <td colspan="2">Upload Image Three</td>
-					<td colspan="5">
-					<input type="file" name="claimfile" class="form-control" id="ImageThree" /><br>
-					<p id="imagethree_error" style="display:none">Upload Image or File Must Be Less Than 500kb</p>
-					</td> -->
-				</tr>
-				<tr>
-					<!-- <td colspan="2">Upload Image Four</td>
-					<td colspan="5">
-					<input type="file" name="claimfile" class="form-control" id="ImageFour" /><br>
-					<p id="imagefour_error" style="display:none">Upload Image or File Must Be Less Than 500kb</p>
-					</td> -->
-				</tr>
-				<tr>
-					<!-- <td colspan="2">Upload Image Five</td> 
-					<td colspan="5">
-					<input type="file" name="claimfile" class="form-control" id="ImageFive" /><br> 
-					<p id="imagefive_error" style="display:none">Upload Image or File Must Be Less Than 500kb</p> 
-					</td> -->
-				</tr>
-				<tr>
-					<!-- <td colspan="2">Upload Image Six</td>
-					<td colspan="5">
-					<input type="file" name="claimfile" class="form-control" id="ImageSix" /><br>
-					<p id="imagesix_error" style="display:none">Upload Image or File Must Be Less Than 500kb</p> 
-					</td> -->
-				</tr>
-				<tr>
-					<td colspan="7">
-						<p style="color:#fbe9e7">
-							Further to my above claim, I hereby authorize the paying/disbursing authority to deduct/reduce my claim as per the Management fixation of Cap/Maximum limit from time to time.
-							The above information furnished by me is true to my knowledge & the documents attached are in order.
-							If any deviation found at later stage during audit, I will be held responsible
-						</p>
-					</td>
-				</tr>
-				<tr>
-					<td colspan="2">
-						<input type="checkbox" 
-						name="agree" 
-						required title="Please accept the terms and conditions">&nbsp;I Agree
-					</td>
-					<td colspan="5">&nbsp;&nbsp;<input type="submit" value="Save" name="saveClaim" class="btn btn-success" id="claimsubmit" style="font-weight:bold"/></td>
-				</tr>
-			</table>
-			<?php 
-				} 
-				else
-				{
-					$rowSingle = mysqli_fetch_assoc($result);
-					$claimID = $rowSingle["claimID"];					
-					if($object->CheckForBatchImages($claimID))
-					{
-						echo "<div class=\"notice_claim\">Notice : </br>
-						Verify all the details before submitting the claim</br>
-						Every batch must have the require files and information</div>";
-					}
-					else
-					{
-						echo "<div class=\"warning_claim\">Warning : Please upload image for every batch, or you will not allowed to submit the clame</div>";
-						$flag_diable_submit = true;
-					}
-			?>
-			<form method="POST" action="addClaim.php" enctype="multipart/form-data">
-			<input type="hidden" name="claimID" style="width:100%" required class="form form-control" value="<?php echo $rowSingle['claimID'] ?>" readonly="true"/>
-			
-				<!-- +++++++++++++++++++++++++++++++++++++++ Claim Read Form +++++++++++++++++++++++++++++++ -->
-				
-				<table class="claimform">
-							<tr>
-								<td colspan="7">
-									<center>
-										<h4>Centurion University Of Technology & Management</h4>
-										<p><b>School Of Vocational Education & Training</b></br>
-										<b>Assessment / Coordination Fees Claim Form</b><p>
-									</center>
+								<td colspan="2">
+									<input type="checkbox" 
+									name="agree" 
+									title="Please accept the terms and conditions">&nbsp;I Agree
 								</td>
+								<td colspan="5">&nbsp;&nbsp;<input type="submit" value="Save" name="saveClaim" class="btn btn-success" id="claimsubmit" style="font-weight:bold"/></td>
 							</tr>
-							<tr>
-								<td colspan="7"><h3><b>Claim Form</b></h3></td>
-							</tr>
-				<tr>
-					<td>To</td>
-					<td colspan="2">
-						<input type="text" name="to" style="width:100%" required class="form form-control" value="<?php echo $rowSingle['claimTo'] ?>" readonly="true" /><br>
-						<small>Head Skill Assessment & Certification</small>
-					</td>
-					<td>Date</td>
-					<td>
-						<input type="date" name="date" required class="form form-control" value="<?php echo $rowSingle['date'] ?>" readonly="true" />
-					</td>
-					<td>For the month of</td>
-					<td>
-						<input type="text" name="forMonthOf" id="forMonthOf" required class="form form-control" onchange="checkDate()"  value="<?php echo $rowSingle['forMonthOf'] ?>" readonly="true" /><br>
-						<small id="date_error" style="display:none">Your Claim Date Is Invalid</small>
-					</td>
-				</tr>
-				<tr>
-					<td colspan="2">CC</td>
-					<td colspan="2">
-						<input type="text" name="cc" style="width:100%" required class="form form-control" value="<?php echo $rowSingle['cc'] ?>" readonly="true"/>
-					</td>
-					<td>Base Location</td>
-					<td colspan="2">
-						<input type="text" name="baseLocation" style="width:100%" required class="form form-control" value="<?php echo $rowSingle['baseLocation'] ?>" readonly="true"/>
-					</td>
-				</tr>
-				<tr>
-					<td colspan="2">Project claim under</td>
-					<td colspan="2">
-						<input type="text" name="projectClaimUnder" style="width:100%" required class="form form-control" value="<?php echo $rowSingle['projectClaimUnder'] ?>" readonly="true"/>
-					</td>
-					<td>Destination Location</td>
-					<td colspan="2">
-						<input type="text" name="destinationLocation" style="width:100%" required class="form form-control" value="<?php echo $rowSingle['destinationLocation'] ?>" />
-					</td>
-				</tr>
-				<tr>
-					<td colspan="2">Name Of The Candidate</td>
-					<td colspan="2">
-						<input type="text" 
-						name="nameOfCandidate" 
-						style="width:100%" 
-						readonly="true" 
-						value="<?php echo $rowSingle['userName'] ?>" readonly="true"
-						class="form form-control" /></td>
-					<td>Contact Number</td>
-					<td colspan="2">
-						<input type="text" 
-						name="contactNumber" 
-						style="width:100%" 
-						required
-						value="<?php echo $rowSingle['contact'] ?>"
-						readonly="true"
-						pattern="^[0-9]{5,12}"
-						title="Please provide a valid contact number" class="form form-control"/>
-					</td>
-				</tr>
-				<tr>
-					<td colspan="2">Bank Name</td>
-					<td colspan="1">
-						<input type="text" 
-						name="bankName" 
-						style="width:100%" 
-						readonly="true" 
-						value="<?php echo $rowSingle['bankName'] ?>" readonly="true"
-						class="form form-control"/></td>
-					<td>Bank Branch</td>
-					<td colspan="1">
-						<input type="text" 
-						name="bankBranch" 
-						style="width:100%" 
-						readonly="true" 
-						value="<?php echo $rowSingle["bankBranch"] ?>" readonly="true" class="form form-control"/>
-					</td>
-					<td>PAN Number</td>
-					<td colspan="1">
-						<input type="text" 
-						name="panNumber" 
-						style="width:100%" 
-						readonly="true" 
-						value="<?php echo $rowSingle["panNumber"] ?>" readonly="true"
-						class="form form-control"/></td>
-				</tr>
-				<tr>
-					<td colspan="2">Account Number</td>
-					<td colspan="2">
-						<input type="text" 
-						name="accountNumber" 
-						style="width:100%" 
-						readonly="true" 
-						value="<?php echo $rowSingle["accountNumber"] ?>" readonly="true" class="form form-control"/>
-					</td>
-					<td>IFSC Code</td>
-					<td colspan="2">
-						<input type="text" 
-						name="ifcCode" 
-						style="width:100%" 
-						readonly="true" 
-						value="<?php echo $rowSingle["ifcCode"] ?>" readonly="true" class="form form-control"/>
-					</td>
-				</tr>
-				<tr>
-					<td colspan="6"><h3><b>Details batch Assessed</b></h3></td>
-					<td rowspan="2">Amount Claim</td>
-				</tr>
-				<tr>
-					<td>Slno</td>
-					<td>Batch Number</td>
-					<td>Sector</td>
-					<td>Trade</td>
-					<td>Date of Assessment</td>
-					<td>Number of Candidate</td>
-				</tr>
-				<?php
-					$temp = ["_one","_two","_three","_four","_five","_six"];
-					$count = 1;
-					$index = 0;
-					$result = $object->TempClaimReport($claimID);
-					while($row = mysqli_fetch_assoc($result))
-					{
-						echo "<tr>";
-						echo "<td>".$count."</td>";
-						echo "<td><input type='text' name='batchNumber".$temp[$index]."' style='width:100%' required class='form form-control' value='".$row["batchNo"]."' readonly='true'/></td>";
-						echo '<td><input type="text" name="sector'.$temp[$index].'" style="width:100%" required class="form form-control" value="'.$row["sector"].'" readonly="true"/></td>';
-						echo '<td><input type="text" name="trade'.$temp[$index].'" style="width:100%" required class="form form-control" value="'.$row["trade"].'" readonly="true"/></td>';
-						echo '<td><input type="text" name="dateassessment'.$temp[$index].'" style="width:100%" required class="form form-control" value="'.$row["doa"].'" readonly="true"/></td>';
-						echo '<td><input type="text" name="noofcandidate'.$temp[$index].'" style="width:100%" required class="form form-control" value="'.$row["candidates"].'" readonly="true"/></td>';
-						echo '<td><input type="text" name="amount'.$temp[$index].'" style="width:100%" required class="form form-control" value="'.$row["amountClaim"].'" readonly="true" id="amount'.$temp[$index].'"/></td>';
-						echo "</tr>";
-						echo "<tr>";
-						echo "<td colspan='7'><a class=\"upload_image_link\" href='upload_image.php?claimID=".$claimID."&batchNo=".$row["batchNo"]."'>Upload Files</a></td>";
-						echo "</tr>";
-						$count++;
-						$index++;
-					}
-					for($i=$index;$i<6;$i++)
-					{
-						
-						echo "<tr>";
-						echo "<td>".$count."</td>";
-						echo "<td><input type='text' name='batchNumber".$temp[$i]."' style='width:100%'  class='form form-control' value='' /></td>";
-						echo '<td><input type="text" name="sector'.$temp[$i].'" style="width:100%"  class="form form-control" value="" /></td>';
-						echo '<td><input type="text" name="trade'.$temp[$i].'" style="width:100%"  class="form form-control" value="" /></td>';
-						echo '<td><input type="date" name="dateassessment'.$temp[$i].'" style="width:100%"  class="form form-control" value="" /></td>';
-						echo '<td><input type="text" name="noofcandidate'.$temp[$i].'" style="width:100%"  class="form form-control" value="" /></td>';
-						echo '<td><input type="text" name="amount'.$temp[$i].'" style="width:100%"  class="form form-control" value="" onchange="addTotal();" id="amount'.$temp[$i].'"/></td>';
-						echo "</tr>";
-						
-						$count++;
-					}
-				?>
-				<tr>
-					<td colspan="6" class="bold">Total Assessment Fee</td>
-					<td>
-						<input type="text" name="assessmentFee" style="width:100%" required class="form form-control" value="<?php echo $rowSingle['totalAssessmentFee'] ?>" readonly="true" id="amount"/>
-						
-					</td>
-				</tr>
-				<tr>
-					<td colspan="6" class="bold">Less Advance Taken</td>
-					<td>
-						<input type="text" name="lessBalance" style="width:100%" required class="form form-control" value="<?php echo $rowSingle['lessAdvanceTaken'] ?>" id="less"  onchange="addbalance();"/>
-						
-					</td>
-				</tr>
-				<tr>
-					<td colspan="6" class="bold">Balance to (Refund / Payment)</td>
-					<td>
-						<input type="text" name="rfundBalance" style="width:100%" required class="form form-control" value="<?php echo $rowSingle["refundBalance"] ?>" readonly="true" id="balance"/>						
-					</td>
-				</tr>
-				<tr>
-					<td colspan="2">Amount in words</td>
-					<td colspan="5">
-						<input type="text" 
-						name="amountInWords" 
-						style="width:100%" 
-						required 
-						pattern="^[A-Za-z][A-Za-z\s]{3,75}"
-						title="Amount must be in lower case & Must be in alphabets" class="form form-control" value="<?php echo $rowSingle["amountInWords"] ?>" /></td>
-				</tr>
-				
-				<tr>
-					<td colspan="7">
-						<input type="submit" value="submit" name="addClaim" class="btn btn-success" id="claimsubmit_submit" onclick="return confirm('Confirm To Submit The Claim')"/>
-						<input type="submit" value="Add Batch" name="addBatch" class="btn btn-primary" id="claimsubmit" onclick="return confirm('Confirm To Add Batch')"/>
-						<input type="submit" value="Delete" name="deleteClaim" class="btn btn-danger" id="claimsubmit" onclick="return confirm('Confirm To Delete The Saved Claim Form')"/>
-						<a style="color:white" href="../reports/temp_files.php?claimID=<?php echo $rowSingle['claimID'] ?>">View Images</a>
-					</td>
-				</tr>
-			</table>
-				<!-- +++++++++++++++++++++++++++++++++++++++ Claim Read Form End +++++++++++++++++++++++++++++++ -->
-			</form>
-			<?php
-				echo "<script>document.getElementById('claimsubmit_submit').disabled = $flag_diable_submit</script>";
-				}
-			?>
-		</form>
-				      	
-				      </div>
-				    </div>
+						</table>
+					</form>				      	
+	      		</div>
+	    	</div>
+
+	    	<!-- --------------------------- Claim Form End --------------------------- -->
+
 				    <div id="menu3" class="container tab-pane fade"><br>
 				      <!-- <h3 style="text-align:left;color:#d35400;font-weight:bold">Claim Details</h3> -->
 				      <div>

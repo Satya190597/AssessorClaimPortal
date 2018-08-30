@@ -1,7 +1,7 @@
 <?php
 	class connection
 	{
-		public $hostname='localhost';
+		public $hostname='';
 		public $username='';
 		public $password='';
 		public $dbname='';
