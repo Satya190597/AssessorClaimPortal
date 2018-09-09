@@ -10,6 +10,7 @@
   		<script src="javascript/updateClaimBatch.js"></script>
 		<script src="javascript/claim.js"></script>
 		<script src="javascript/home.js"></script>
+		<script src="javascript/claim_validation.js"></script>
 		<?php
 			include_once 'connection/connection.php';
 			include_once 'class/controller.php';
@@ -506,7 +507,7 @@
 									</td>
 									<td>Date</td>
 									<td>
-										<input type="date" name="date"  class="form form-control"/>
+										<input type="date" name="date"  class="form form-control" id="date_claim"/>
 									</td>
 									<td>For the month of</td>
 									<td>
@@ -536,17 +537,17 @@
 									</td>
 									<td>Base Location</td>
 									<td colspan="2">
-										<input type="text" name="baseLocation" style="width:100%"  class="form form-control"/>
+										<input type="text" name="baseLocation" style="width:100%"  class="form form-control" id="baselocation_claim"/>
 									</td>
 								</tr>
 								<tr>
 									<td colspan="2">Project claim under</td>
 									<td colspan="2">
-										<input type="text" name="projectClaimUnder" style="width:100%"  class="form form-control"/>
+										<input type="text" name="projectClaimUnder" style="width:100%"  class="form form-control" id="projectclaimunder_claim"/>
 									</td>
 									<td>Destination Location</td>
 									<td colspan="2">
-										<input type="text" name="destinationLocation" style="width:100%"  class="form form-control"/>
+										<input type="text" name="destinationLocation" style="width:100%"  class="form form-control" id="destinationlocation_claim" />
 									</td>
 								</tr>
 								<tr>
@@ -643,7 +644,7 @@
 									<td>
 										<input type="text"		name="amount" 				class="form-control" id="claim_amount"/>
 									</td>
-									<td><input type="submit"	name="add" 		class="btn btn-primary"		value="Add Batch"/></td>
+									<td><input type="submit"	name="add" 		class="btn btn-success"		value="Add Batch" onclick="return addBatchValidation();" /></td>
 								</tr>
 								<?php
 									$result = $object->selectClaimBatch($adhar);
@@ -690,12 +691,12 @@
 										class="form-control"
 										id="<?php echo $row['ID']; ?>amount"/>
 									</td>
-									<td><a href="upload_batch_image.php?batch_id=<?php echo $row['ID']; ?>&batch_number=<?php echo $row['batchNo'] ?>">Upload Files</a></td>
+									<td><a href="upload_batch_image.php?batch_id=<?php echo $row['ID']; ?>&batch_number=<?php echo $row['batchNo'] ?>" class="btn btn-primary">Upload Files</a></td>
 								</tr>
 								<tr>
 									<td colspan="7">
-										<input type="button" value="Update" onclick="updateClaim(<?php echo $row['ID']; ?>);"/>
-										<a href="delete_claim_batch.php?id=<?php echo $row['ID']; ?>">Delete</a>
+										<input type="button" value="Update" onclick="updateClaim(<?php echo $row['ID']; ?>);" class="btn btn-primary"/>
+										<a href="delete_claim_batch.php?id=<?php echo $row['ID']; ?>" class="btn btn-danger">Delete</a>
 									</td>
 								</tr>
 								<?php
@@ -714,7 +715,7 @@
 									Less Advance Taken
 								</td>
 								<td colspan="6">
-									<input type="number" name="lessbalance" class="form-control" />
+									<input type="number" name="lessbalance" class="form-control" id="lessbalance_cliam"/>
 								</td>
 							</tr>
 							<tr>
@@ -723,7 +724,7 @@
 									name="agree" 
 									title="Please accept the terms and conditions">&nbsp;I Agree
 								</td>
-								<td colspan="5">&nbsp;&nbsp;<input type="submit" value="Save" name="saveClaim" class="btn btn-success" id="claimsubmit" style="font-weight:bold"/></td>
+								<td colspan="5">&nbsp;&nbsp;<input type="submit" value="Save" name="saveClaim" class="btn btn-success" id="claimsubmit" style="font-weight:bold" onclick="return addClaimValidation()" /></td>
 							</tr>
 						</table>
 					</form>				      	
