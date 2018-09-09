@@ -626,22 +626,22 @@
 								</tr>
 								<tr>
 									<td>
-										<input type="text"		name="batch"				class="form-control" />
+										<input type="text"		name="batch"				class="form-control" id="claim_batch"/>
 									</td>
 									<td>
-										<input type="text"		name="sector"				class="form-control" />
+										<input type="text"		name="sector"				class="form-control" id="claim_sector"/>
 									</td>
 									<td>
-										<input type="text"		name="trade" 				class="form-control" />
+										<input type="text"		name="trade" 				class="form-control" id="claim_trade"/>
 									</td>
 									<td>
-										<input type="date"		name="date_of_assessment" 	class="form-control" />
+										<input type="date"		name="date_of_assessment" 	class="form-control" id="claim_date"/>
 									</td>
 									<td>
-										<input type="text"		name="number_of_candidate"  class="form-control" />
+										<input type="text"		name="number_of_candidate"  class="form-control" id="claim_candidate"/>
 									</td>
 									<td>
-										<input type="text"		name="amount" 				class="form-control" />
+										<input type="text"		name="amount" 				class="form-control" id="claim_amount"/>
 									</td>
 									<td><input type="submit"	name="add" 		class="btn btn-primary"		value="Add Batch"/></td>
 								</tr>
@@ -690,7 +690,7 @@
 										class="form-control"
 										id="<?php echo $row['ID']; ?>amount"/>
 									</td>
-									<td><a href="#">Upload Files</a></td>
+									<td><a href="upload_batch_image.php?batch_id=<?php echo $row['ID']; ?>&batch_number=<?php echo $row['batchNo'] ?>">Upload Files</a></td>
 								</tr>
 								<tr>
 									<td colspan="7">
@@ -707,6 +707,14 @@
 										The above information furnished by me is true to my knowledge & the documents attached are in order.
 										If any deviation found at later stage during audit, I will be held responsible
 									</p>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									Less Advance Taken
+								</td>
+								<td colspan="6">
+									<input type="number" name="lessbalance" class="form-control" />
 								</td>
 							</tr>
 							<tr>
@@ -749,6 +757,8 @@
 								echo "<td>$row[2]</td>";
 								if($row[20]==0)
 									echo "<td style='color:red'>Pending</td>";
+								else if($row[20]==2)
+									echo "<td><a href='updateRedeem.php?claimID=$row[0]' class=\"btn btn-primary\">Update Your Claim</a></td>";
 								else
 									echo "<td style='color:green'>Approved</td>";
 				

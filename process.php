@@ -15,13 +15,17 @@
 			break;
 			case '3':
 				if(isset($_GET["claimid"]))
+				{
 					$object = new accessorOperations();
 					$object->approvClaim($_GET["claimid"]);
+				}
 			break;
 			case '4':
 				if(isset($_GET["claimid"]))
+				{
 					$object = new accessorOperations();
 					$object->deapprovClaim($_GET["claimid"]);
+				}
 			break;
 			case '5':
 				$object = new accessorOperations();
@@ -62,6 +66,17 @@
 			case '13':
 				$object = new accessorOperations();
 				echo $object->DeleteClaim($_GET["claimid"]);
+			break;
+			case '14':
+				if(isset($_GET["claimid"]))
+				{
+					$object = new accessorOperations();
+					echo $object->reedemClaim($_GET["claimid"]);
+				}
+			break;
+			case '15':
+				$object = new accessorOperations();
+				echo $object->selectRedeemClaims();
 			break;
 			default:
 				# code...

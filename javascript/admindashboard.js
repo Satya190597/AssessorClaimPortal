@@ -8,6 +8,7 @@ app.controller("mycontroller",function($scope,$http,$document,$window){
 
 	$scope.alluser = {},
 	$scope.claimpending = {}
+	$scope.claimredeem = {}
 	$scope.claimapproved = {}
 	$scope.sendData = {};
 	$scope.request = {};
@@ -58,6 +59,16 @@ app.controller("mycontroller",function($scope,$http,$document,$window){
 
 		});
 	}
+	$scope.getRedeem = function()
+	{
+		$scope.claimpending = {};
+		$http.get("process.php?function=15").then(function(response){
+		$scope.claimredeem = response.data;
+		},function(error)
+		{
+
+		});
+	}
 	$scope.getKYC = function(adhar)
 	{
 		$scope.kyc = {};
@@ -73,6 +84,16 @@ app.controller("mycontroller",function($scope,$http,$document,$window){
 		$scope.claimapproved = {};
 		$http.get("process.php?function=2").then(function(response){
 			$scope.claimapproved = response.data;
+		},function(error)
+		{
+
+		});
+	}
+	$scope.reedemClaim = function(id)
+	{
+		$http.get("process.php?function=14&claimid="+id).then(function(response){
+			$scope.getApprove();
+			$scope.getApprove();
 		},function(error)
 		{
 

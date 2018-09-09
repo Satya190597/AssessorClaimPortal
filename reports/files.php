@@ -1,60 +1,43 @@
 <html>
 	<head>
 		<title>Claim Files</title>
+		<link rel="stylesheet" href="../lib/bootstrap.min.css">
 		<script>
 			window.print();
 		</script>
 		<?php
 			include_once '../connection/connection.php';
 			include_once '../class/controller.php';
-			session_start();
-			if(isset($_SESSION["useradhar"]) || isset($_SESSION["adminid"]))
-			{
-				$adhar = $_SESSION["useradhar"];
-				$claimID = $_GET["claimID"];
-				$object = new accessorOperations();
-				$result = $object->GetClaimFiles($claimID);
-			}
-			else
-			{
-				header("Location:../login.php");
-			}
+			$claimID = $_GET["claimID"];
+			$object = new accessorOperations();
+			$result = $object->getClaimImages($claimID);
 		?>
 	</head>
 	<body>
 		<center>
+			<table class="table">
+				<tr>
+					<td><b>Image</b></td>
+					<td><b>Batch Number</b></td>
+					<td><b>Assessment Date</b></td>
+					<td><b>Training Provider</b></td>
+					<td><b>Testing Cneter</b></td>
+				</tr>
 			<?php 
 				while($row = mysqli_fetch_assoc($result))
 				{
 			?>
-			<table>
 				<tr>
-					<td><?php echo $row['Batch Number'] ?></td>
+					<td><image src="../<?php echo $row['image_url'] ?>" width="400px" height="350px" /></td>
+					<td><?php echo $row['batch_number'] ?></td>
+					<td><?php echo $row['assessment_date'] ?></td>
+					<td><?php echo $row['training_provider'] ?></td>
+					<td><?php echo $row['testing_center'] ?></td>
 				</tr>
-				<tr>
-					<td><?php echo $row['AssessmentDate'] ?></td>
-					<td><?php echo $row['TrainingProvider'] ?></td>
-					<td><?php echo $row['TestingCenter'] ?></td>
-				</tr>
-				<tr>
-					<td><image src="../<?php echo $row['ImageOne'] ?>" width="400px" height="350px" /></td>
-					<td><image src="../<?php echo $row['ImageTwo'] ?>" width="400px" height="350px" /></td>
-					<td><image src="../<?php echo $row['ImageThree'] ?>" width="400px" height="350px" /></td>
-				</tr>
-				<tr>
-					<td><image src="../<?php echo $row['ImageFour'] ?>" width="400px" height="350px" /></td>
-					<td><image src="../<?php echo $row['ImageFive'] ?>" width="400px" height="350px" /></td>
-					<td><image src="../<?php echo $row['ImageSix'] ?>" width="400px" height="350px" /></td>
-				</tr>
-				<tr>
-					<td><image src="../<?php echo $row['ImageSeven'] ?>" width="400px" height="350px" /></td>
-					<td><image src="../<?php echo $row['ImageEight'] ?>" width="400px" height="350px" /></td>
-					<td><image src="../<?php echo $row['ImageNine'] ?>" width="400px" height="350px" /></td>
-				</tr>
-			</table>
 			<?php
 				}
 			?>
+			</table>
 		</center>
 	</body>
 	

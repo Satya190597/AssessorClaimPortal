@@ -537,6 +537,21 @@
 			}
 			return json_encode($dataarray);
 		}
+		public function selectRedeemClaims()
+		{
+			$myconnection = new connection();
+			$con = $myconnection->getConnection();
+			$query = "SELECT * FROM claim WHERE status=2 ORDER BY date DESC";
+			$result = $con->query($query);
+			$dataarray = array();
+			$temparray = array();
+			while($row=mysqli_fetch_assoc($result))
+			{
+				$temparray = $row;
+				array_push($dataarray,$temparray);
+			}
+			return json_encode($dataarray);
+		}
 		public function selectApprovedClaims()
 		{
 			$myconnection = new connection();
@@ -557,6 +572,13 @@
 			$myconnection = new connection();
 			$con = $myconnection->getConnection();
 			$query = "UPDATE claim SET status=1 WHERE claimID=$claimid";
+			$con->query($query);
+		}
+		public function reedemClaim($claimid)
+		{
+			$myconnection = new connection();
+			$con = $myconnection->getConnection();
+			$query = "UPDATE claim SET status=2 WHERE claimID=$claimid";
 			$con->query($query);
 		}
 		public function deapprovClaim($claimid)
@@ -873,8 +895,225 @@
 		{
 			$myconnection 	= 	new connection();
 			$con 			= 	$myconnection->getConnection();
+			$object  		=	new accessorOperations();
+			$object->deleteBatchImageClaim($ID);
 			$query 			= 	"DELETE FROM claim_batch WHERE ID=$ID AND claimID=-1";
 			$result			=	$con->query($query);
+			mysqli_close($con);
+			return $result;
+		}
+		#----------------------------------------------------------------------------------
+		#	Add Claim Image
+		#----------------------------------------------------------------------------------
+		public function addClaimImage($BATCHID,$ASSESSMENTDATE,$TRAININGPROVIDER,$TESTINGCENTER,$IMAGEURL)
+		{
+			$myconnection	=	new connection();
+			$con 			= 	$myconnection->getConnection();
+			$query 			=	"INSERT INTO image_batch (ID,batch_number,assessment_date,training_provider,testing_center,image_url)VALUES(null,$BATCHID,'$ASSESSMENTDATE','$TRAININGPROVIDER','$TESTINGCENTER','$IMAGEURL')";
+			$result			=	$con->query($query);
+			mysqli_close($con);
+			return $result;
+		}
+		#----------------------------------------------------------------------------------
+		#	Get Uploaded Image
+		#----------------------------------------------------------------------------------
+		public function getBatchImage($BATCHID)
+		{
+			$myconnection	=	new connection();
+			$con 			= 	$myconnection->getConnection();
+			$query 			= 	"SELECT * FROM image_batch WHERE batch_number=$BATCHID";
+			$result			= 	$con->query($query);
+			mysqli_close($con);
+			return $result;
+		}
+		#----------------------------------------------------------------------------------
+		#	Delete Uploaded Image
+		#----------------------------------------------------------------------------------
+		public function deleteBatchImage($BATCHID)
+		{
+			$myconnection	=	new connection();
+			$con 			= 	$myconnection->getConnection();
+			$object 		= 	new accessorOperations();
+			$object->removeFromDirectory($BATCHID);
+			$query 			= 	"DELETE FROM image_batch WHERE id=$BATCHID";
+			$result			= 	$con->query($query);
+			mysqli_close($con);
+			return $result;
+		}
+		#----------------------------------------------------------------------------------
+		#	Remove Claim Images From Directory
+		#----------------------------------------------------------------------------------
+		public function removeFromDirectory($BATCHID)
+		{
+			$myconnection	=	new connection();
+			$con 			= 	$myconnection->getConnection();
+			$query 			= 	"SELECT id,image_url FROM image_batch WHERE id=$BATCHID";
+			$result			= 	$con->query($query);
+			$row 			=	mysqli_fetch_assoc($result);
+			mysqli_close($con);
+			unlink($row['image_url']);
+		}
+		#----------------------------------------------------------------------------------
+		#	Delete claim Image By batch_id
+		#----------------------------------------------------------------------------------
+		public function deleteBatchImageClaim($BATCHID)
+		{
+			$myconnection	=	new connection();
+			$con 			= 	$myconnection->getConnection();
+			$query 			= 	"SELECT * FROM image_batch WHERE batch_number=$BATCHID";
+			$result 		=	$con->query($query);
+			$object 		= 	new accessorOperations();
+			while($row=mysqli_fetch_assoc($result))
+			{
+				$object->removeFromDirectory($row['id']);
+				$object->deleteBatchImage($row['id']);
+			}
+			mysqli_close($con);
+		}
+		#----------------------------------------------------------------------------------
+		#	GET AMOUNT Not Done
+		#----------------------------------------------------------------------------------
+		public function getClaimAmount($BATCHID)
+		{
+			$myconnection	=	new connection();
+			$con 			= 	$myconnection->getConnection();
+			$query 			= 	"SELECT * FROM image_batch WHERE batch_number=$BATCHID";
+			$result 		=	$con->query($query);
+			$object 		= 	new accessorOperations();
+			mysqli_close($con);
+			while($row=mysqli_fetch_assoc($result))
+			{
+				$object->removeFromDirectory($row['id']);
+				$object->deleteBatchImage($row['id']);
+			}
+		}
+		#----------------------------------------------------------------------------------
+		#	NEW CLAIM
+		#----------------------------------------------------------------------------------
+		public function newClaim($DATA)
+		{
+			$ID 			= 	$this->GenerateClaimId();
+			$myconnection	=	new connection();
+			# Get Connection
+			$con 			=	$myconnection->getConnection();
+			# Get the sum of total assessment fee
+			$sum_query		=	"SELECT SUM(amountClaim) AS AMOUNT FROM claim_batch WHERE claimId=-1 AND adhar=".$DATA['ADHAR'];
+			$sum_result		=	$con->query($sum_query);
+			$sum_row		=	mysqli_fetch_assoc($sum_result);
+			# Stored the total amount in $SUM
+			$SUM			=	$sum_row['AMOUNT'];
+			$query 			=	"INSERT INTO claim (claimID,
+			claimTo,
+			date,
+			forMonthof,
+			cc,
+			baseLocation,
+			projectClaimUnder,
+			destinationLocation,
+			userName,
+			adhar,
+			contact,
+			bankName,
+			bankBranch,
+			panNumber,
+			accountNumber,
+			ifcCode,
+			lessAdvanceTaken,
+			totalAssessmentFee,
+			refundBalance,
+			status) VALUES ($ID,
+			'".$DATA['TO']."',
+			'".$DATA['DATE']."',
+			'".$DATA['FORMONTHOF']."',
+			'".$DATA['CC']."',
+			'".$DATA['BASELOCATION']."',
+			'".$DATA['PROJECT']."',
+			'".$DATA['DESTINATION']."',
+			'".$DATA['CANDIDATE']."',
+			".$DATA['ADHAR'].",
+			".$DATA['CONTACT'].",
+			'".$DATA['BANK']."',
+			'".$DATA['BRANCH']."',
+			'".$DATA['PAN']."',
+			'".$DATA['ACCOUNT']."',
+			'".$DATA['IFC']."',
+			".$DATA["lessbalance"].",
+			".$SUM.",
+			".($SUM-$DATA["lessbalance"]).",
+			0
+			)";
+			$result = $con->query($query);
+			if($result>=1)
+			{
+				$query	= "SELECT MAX(claimID) AS ID FROM claim WHERE adhar=".$DATA['ADHAR'];
+				$result	= $con->query($query);
+				$row 	= mysqli_fetch_assoc($result);
+				$UPDATEID = $row["ID"];
+				$query  = "UPDATE claim_batch SET claimId=$UPDATEID WHERE adhar=".$DATA['ADHAR']." AND claimId=-1";
+				$result = $con->query($query);
+				mysqli_close($con);
+				return $result;
+			}
+			else
+			{
+				mysqli_close($con);
+				return 0;
+			}	
+		}
+		#--------------------------------------------------------------------------------------------------
+		# Get claim Images 
+		#--------------------------------------------------------------------------------------------------
+		function getClaimImages($CLAIMID)
+		{
+			$query = "SELECT * FROM image_batch WHERE batch_number IN (SELECT ID FROM claim_batch WHERE claimID=".$CLAIMID.");";
+			$myconnection	=	new connection();
+			$con 			=	$myconnection->getConnection();
+			$result 		=	$con->query($query);
+			return $result;
+		}
+		#--------------------------------------------------------------------------------------------------
+		# GET CLAIM BATCH 
+		#--------------------------------------------------------------------------------------------------
+		function selectClaimBatchByClaimID($CLAIMID)
+		{
+			$query 			= "SELECT * FROM claim_batch WHERE claimID=$CLAIMID";
+			$myconnection	= new connection();
+			$con 			= $myconnection->getConnection();
+			$result 		=  $con->query($query);
+			mysqli_close($con);
+			return $result;
+		}
+		function selectClaimByID($CLAIMID)
+		{
+			$query = "SELECT * FROM claim WHERE claimID=".$CLAIMID;
+			$myconnection	= new connection();
+			$con	= $myconnection->getConnection();
+			$result = $con->query($query);
+			mysqli_close($con);
+			return $result;
+		}
+		function updateClaim($claimID,$DATA)
+		{
+			$myconnection	= new connection();
+			$con	= $myconnection->getConnection();
+			# Get the sum of total assessment fee
+			$sum_query		=	"SELECT SUM(amountClaim) AS AMOUNT FROM claim_batch WHERE claimId=$claimID";
+			$sum_result		=	$con->query($sum_query);
+			$sum_row		=	mysqli_fetch_assoc($sum_result);
+			# Stored the total amount in $SUM
+			$SUM			=	$sum_row['AMOUNT'];
+			$query = "UPDATE `claim` SET 
+			claimTo='".$DATA['TO']."',
+			date='".$DATA['DATE']."',
+			forMonthOf='".$DATA['FORMONTHOF']."',
+			baseLocation='".$DATA['BASELOCATION']."',
+			projectClaimUnder='".$DATA['PROJECT'] ."',
+			destinationLocation='".$DATA['DESTINATION']."',
+			lessAdvanceTaken=".$DATA['lessbalance'] .",
+			totalAssessmentFee=".$SUM.",
+			refundBalance=".($SUM-$DATA["lessbalance"]).",
+			status=0 WHERE claimID=".$claimID;
+			$result = $con->query($query);
 			mysqli_close($con);
 			return $result;
 		}

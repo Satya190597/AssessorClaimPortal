@@ -41,6 +41,9 @@
 						    <a class="nav-link" data-toggle="pill" href="#menu2" ng-click="getDeapprove();">Approved Claims</a>
 						  </li>
 						  <li class="nav-item">
+						    <a class="nav-link" data-toggle="pill" href="#menu8" ng-click="getRedeem();">Redeem Claims</a>
+						  </li>
+						  <li class="nav-item">
 						    <a class="nav-link" data-toggle="pill" href="#menu3" ng-click="getAllRequest();" >Request</a>
 						  </li>
 						  <?php if($_SESSION['adminrole']!=0){ ?>
@@ -128,6 +131,7 @@
 						  				<td style="color: #8e44ad">Print</td>
 						  				<td style="color: #8e44ad">File</td>
 						  				<td style="color: #229954">Approve</td>
+						  				<td style="color: #229954">Redeem</td>
 					  				</tr>
 						  			<tr ng-repeat="element in claimpending | filter:adhar" style="font-weight: bold">
 						  				<td>{{$index+1}}</td>
@@ -143,6 +147,9 @@
 						  				</td>
 						  				<td>
 						  					<input type="button" value="Approve" ng-click="approvedClaim(element.claimID);" class="btn btn-success"/>
+						  				</td>
+						  				<td>
+						  					<input type="button" value="Redeem" ng-click="reedemClaim(element.claimID);" class="btn btn-primary" ng-if="element.status!=2"/>
 						  				</td>
 					  				</tr>
 					  			</table>
@@ -186,12 +193,58 @@
 						  					<a ng-href="reports/files.php?claimID={{element.claimID}}" class="btn">File</a>						  
 						  				</td>
 						  				<td>
-						  					<input type="button" value="Disapprove" ng-click="deapprovedClaim(element.claimID);" class="btn btn-danger"/>
+						  					<input type="button" value="Disapprove" ng-click="deapprovedClaim(element.claimID);" class="btn btn-danger" />
 						  				</td>
 					  				</tr>
 					  			</table>
 					  		</div>
 						  </div>
+						  <!----------------- Reedem Claims --------------------------------->
+						  <div class="tab-pane container" id="menu8">
+						  	<div>
+						  		<table class="searchControl">
+						  			<tr>
+						  				<td><b>Search</b></td>
+						  				<td>
+						  					<input type="text" ng-model="deadhar"
+						  					class="form-control" 
+						  					style="background-color: #34495e;color: #fdfefe;font-weight: bold;"/>
+						  				</td>
+						  			</tr>
+					  			</table>
+						  	</div>
+						  	<div>
+						  		<table class="table table-striped">
+						  			<tr style="font-weight: bolder;color: #1f618d">
+						  				<td>Index</td>
+						  				<td>Claim ID</td>
+						  				<td>Aadhar</td>
+						  				<td>Username</td>
+						  				<td>Date</td>
+						  				<td style="color: #8e44ad">Print</td>
+						  				<td style="color: #8e44ad">File</td>
+						  				<td style="color: #229954">Approve</td>
+					  				</tr>
+						  			<tr ng-repeat="element in claimredeem | filter:deadhar" style="font-weight: bold">
+						  				<td>{{$index+1}}</td>
+						  				<td>{{element.claimID}}</td>
+						  				<td>{{element.adhar}}</td>
+						  				<td>{{element.userName}}</td>
+						  				<td>{{element.date}}</td>
+						  				<td>
+						  					<a ng-href="reports/claim.php?claimID={{element.claimID}}" class="btn">Print</a>
+						  				</td>
+						  				<td>
+						  					<a ng-href="reports/files.php?claimID={{element.claimID}}" class="btn">File</a>		  
+						  				</td>
+						  				<td>
+						  					<input type="button" value="Approve" ng-click="approvedClaim(element.claimID);" class="btn btn-success"/>
+						  				</td>
+					  				</tr>
+					  			</table>
+					  		</div>
+						  </div>
+						  <!----------------------------------------------------------------->
 						  <div class="tab-pane container" id="menu3">
 						  	<div>
 						  		<table class="searchControl">
