@@ -7,7 +7,7 @@
   		<script src="lib/popper.min.js"></script>
   		<script src="lib/bootstrap.min.js"></script>
   		<script src="javascript/KYCValidation.js"></script>
-  		<script src="javascript/updateClaimBatch.js"></script>
+  		<script src="javascript/UpdateClaimBatch.js"></script>
 		<script src="javascript/claim.js"></script>
 		<script src="javascript/home.js"></script>
 		<script src="javascript/claim_validation.js"></script>
@@ -483,7 +483,9 @@
 				    </div>
 
 				    <!-- ------------------------------ Claim Form ------------------------------ -->
-
+			    	<?php
+			    		$flag = $object->CheckAllClaimImage($adhar);
+			    	?>
 				    <div id="menu2" class="tab-pane fade claimContainerForm" style="width:80%"><br>
 				      <div>
 				      	<form method="POST" action="addClaim.php" enctype="multipart/form-data">
@@ -659,43 +661,44 @@
 										<input type="text" 
 										value="<?php echo $row['batchNo']; ?>"		
 										class="form-control"
-										id="<?php echo $row['ID']; ?>batch"/>
+										id="<?php echo $row['ID']; ?>batch" disabled/>
 									</td>
 									<td>
 										<input type="text" 
 										value="<?php echo $row['sector']; ?>" 		
 										class="form-control"
-										id="<?php echo $row['ID']; ?>sector"/>
+										id="<?php echo $row['ID']; ?>sector" disabled/>
 									</td>
 									<td>
 										<input type="text" 
 										value="<?php echo $row['trade']; ?>" 		
 										class="form-control"
-										id="<?php echo $row['ID']; ?>trade"/>
+										id="<?php echo $row['ID']; ?>trade" disabled/>
 									</td>
 									<td>
 										<input type="date" 
 										value="<?php echo $row['doa']; ?>"			
 										class="form-control"
-										id="<?php echo $row['ID']; ?>date"/>
+										id="<?php echo $row['ID']; ?>date" disabled/>
 									</td>
 									<td>
 										<input type="text" 
 										value="<?php echo $row['candidates']; ?>" 	
 										class="form-control"
-										id="<?php echo $row['ID']; ?>candidate"/>
+										id="<?php echo $row['ID']; ?>candidate" disabled/>
 									</td>
 									<td>
 										<input type="text" 
 										value="<?php echo $row['amountClaim']; ?>"	
 										class="form-control"
-										id="<?php echo $row['ID']; ?>amount"/>
+										id="<?php echo $row['ID']; ?>amount" disabled/>
 									</td>
 									<td><a href="upload_batch_image.php?batch_id=<?php echo $row['ID']; ?>&batch_number=<?php echo $row['batchNo'] ?>" class="btn btn-primary">Upload Files</a></td>
 								</tr>
 								<tr>
 									<td colspan="7">
-										<input type="button" value="Update" onclick="updateClaim(<?php echo $row['ID']; ?>);" class="btn btn-primary"/>
+										<input type="button" value="Edit" onclick="enable(<?php echo $row['ID'] ?>)" class="btn btn-primary"/>
+										<input type="button" value="Update" onclick="updateClaim(<?php echo $row['ID']; ?>);" class="btn btn-primary" id="<?php echo $row['ID']; ?>update" disabled />
 										<a href="delete_claim_batch.php?id=<?php echo $row['ID']; ?>" class="btn btn-danger">Delete</a>
 									</td>
 								</tr>
@@ -714,8 +717,8 @@
 								<td>
 									Less Advance Taken
 								</td>
-								<td colspan="6">
-									<input type="number" name="lessbalance" class="form-control" id="lessbalance_cliam"/>
+								<td colspan="6">								
+									<input type="number" name="lessbalance" class="form-control" id="lessbalance_cliam" value="0"/>	
 								</td>
 							</tr>
 							<tr>
@@ -724,7 +727,11 @@
 									name="agree" 
 									title="Please accept the terms and conditions">&nbsp;I Agree
 								</td>
+								<?php if($flag>=1){ ?>
 								<td colspan="5">&nbsp;&nbsp;<input type="submit" value="Save" name="saveClaim" class="btn btn-success" id="claimsubmit" style="font-weight:bold" onclick="return addClaimValidation()" /></td>
+								<?php }else{ ?>
+								<td colspan="5">&nbsp;&nbsp;<strong>Upload Image For Every Batch Brfore Submittion</strong></td>
+								<?php } ?>
 							</tr>
 						</table>
 					</form>				      	

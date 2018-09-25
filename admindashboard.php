@@ -87,6 +87,7 @@
 						  				</td>
 						  				<td>
 						  					<a href='../reports/kya_user_report.php'><input type="button" class="btn btn-success" value="All Record" /></a>
+						  					<a href='reports/all_kyc.php' class="btn btn-primary" style="color:white">Download Records</a>
 						  				</td>
 						  			</tr>
 					  			</table>

@@ -5,7 +5,7 @@
 	<link rel="stylesheet" href="style/home.css">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 	<script src="lib/jquery.min.js"></script>
-	<script src="javascript/updateClaimBatch.js"></script>
+	<script src="javascript/UpdateClaimBatch.js"></script>
 	<script src="javascript/home.js"></script>
 	<?php
 		include_once 'connection/connection.php';
@@ -197,7 +197,8 @@
 					</tr>
 					<tr>
 						<td colspan="7">
-							<input type="button" value="Update" onclick="updateClaim(<?php echo $row_batch['ID']; ?>);" class="btn btn-primary" style="font-weight: bold"/>
+							
+							<input type="button" value="Update" onclick="updateClaimReedem(<?php echo $row_batch['ID']; ?>,<?php echo $CLAIMID; ?>);" class="btn btn-primary" style="font-weight: bold"/>
 							<a href="delete_claim_batch.php?id=<?php echo $row_batch['ID']; ?>" class="btn btn-danger" style="font-weight: bold">Delete</a>
 						</td>
 					</tr>

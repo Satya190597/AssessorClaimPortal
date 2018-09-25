@@ -1,6 +1,92 @@
 <?php
 	class accessorOperations
 	{
+		#------------------------
+		# Convert Number To Words
+		#------------------------
+		public function numberTowords($num)
+		{ 
+			$ones = array( 
+			1 => "One", 
+			2 => "Two", 
+			3 => "Three", 
+			4 => "Four", 
+			5 => "Five", 
+			6 => "Six", 
+			7 => "Seven", 
+			8 => "Eight", 
+			9 => "Nine", 
+			10 => "Ten", 
+			11 => "Eleven", 
+			12 => "Twelve", 
+			13 => "Thirteen", 
+			14 => "Fourteen", 
+			15 => "Fifteen", 
+			16 => "Sixteen", 
+			17 => "Seventeen", 
+			18 => "Eighteen", 
+			19 => "Nineteen" 
+			); 
+			$tens = array( 
+			1 => "Ten",
+			2 => "Twenty", 
+			3 => "Thirty", 
+			4 => "Forty", 
+			5 => "Fifty", 
+			6 => "Sixty", 
+			7 => "Seventy", 
+			8 => "Eighty", 
+			9 => "Ninety" 
+			); 
+			$hundreds = array( 
+			"Hundred", 
+			"Thousand", 
+			"Million", 
+			"Billion", 
+			"Trillion", 
+			"Quadrillion" 
+			); //limit t quadrillion 
+			$num = number_format($num,2,".",","); 
+			$num_arr = explode(".",$num); 
+			$wholenum = $num_arr[0]; 
+			$decnum = $num_arr[1]; 
+			$whole_arr = array_reverse(explode(",",$wholenum)); 
+			krsort($whole_arr); 
+			$rettxt = ""; 
+			foreach($whole_arr as $key => $i){ 
+			if($i < 20){ 
+			$rettxt .= $ones[$i]; 
+			}elseif($i < 100){ 
+			$rettxt .= $tens[substr($i,0,1)]; 
+			$rettxt .= " ".$ones[substr($i,1,1)]; 
+			}else{ 
+			$rettxt .= $ones[substr($i,0,1)]." ".$hundreds[0]; 
+			$rettxt .= " ".$tens[substr($i,1,1)]; 
+			$rettxt .= " ".$ones[substr($i,2,1)]; 
+			} 
+			if($key > 0){ 
+			$rettxt .= " ".$hundreds[$key]." "; 
+			} 
+			} 
+			if($decnum > 0){ 
+			$rettxt .= " and "; 
+			if($decnum < 20){ 
+			$rettxt .= $ones[$decnum]; 
+			}elseif($decnum < 100){ 
+			$rettxt .= $tens[substr($decnum,0,1)]; 
+			$rettxt .= " ".$ones[substr($decnum,1,1)]; 
+			} 
+			} 
+			return $rettxt; 
+		} 
+		public function allKYCNoJSON()
+		{
+			$myconnection = new connection();
+			$con = $myconnection->getConnection();
+			$query = "SELECT user_kyc.adhar,user_name,contact,email FROM user_kyc,user_master WHERE user_kyc.adhar = user_master.adhar";
+			$result = $con->query($query);
+			return $result;
+		}
 		public function allKYC()
 		{
 			$myconnection = new connection();
@@ -889,6 +975,23 @@
 			return $result;
 		}
 		#----------------------------------------------------------------------------------
+		# Update claim batch before submitting the claim form after reedem
+		#----------------------------------------------------------------------------------
+		public function updateClaimBatchReedem($ID,$CLAIMID,$BATCH,$SECTOR,$TRADE,$CANDIDATE,$DATE,$AMOUNT)
+		{
+			$myconnection 	= 	new connection();
+			$con 			= 	$myconnection->getConnection();
+			$query 			= 	"UPDATE claim_batch SET batchNo='$BATCH',
+								sector='$SECTOR',
+								trade='$TRADE',
+								candidates=$CANDIDATE,
+								amountClaim=$AMOUNT,
+								doa='$DATE' WHERE ID=$ID AND claimID=$CLAIMID";
+			$result			=	$con->query($query);
+			mysqli_close($con);
+			return $result;
+		}
+		#----------------------------------------------------------------------------------
 		# Delete claim batch before submitting the claim form 
 		#----------------------------------------------------------------------------------
 		public function deleteClaimBatch($ID)
@@ -1002,6 +1105,8 @@
 			$sum_row		=	mysqli_fetch_assoc($sum_result);
 			# Stored the total amount in $SUM
 			$SUM			=	$sum_row['AMOUNT'];
+			$accobject 		=	new accessorOperations();
+			$amountInWords  =	$accobject->numberTowords(($SUM-$DATA["lessbalance"]));
 			$query 			=	"INSERT INTO claim (claimID,
 			claimTo,
 			date,
@@ -1021,6 +1126,7 @@
 			lessAdvanceTaken,
 			totalAssessmentFee,
 			refundBalance,
+			amountInWords,
 			status) VALUES ($ID,
 			'".$DATA['TO']."',
 			'".$DATA['DATE']."',
@@ -1040,6 +1146,7 @@
 			".$DATA["lessbalance"].",
 			".$SUM.",
 			".($SUM-$DATA["lessbalance"]).",
+			'".$amountInWords."',
 			0
 			)";
 			$result = $con->query($query);
@@ -1102,6 +1209,8 @@
 			$sum_row		=	mysqli_fetch_assoc($sum_result);
 			# Stored the total amount in $SUM
 			$SUM			=	$sum_row['AMOUNT'];
+			$accobject 		=	new accessorOperations();
+			$amountInWords  =	$accobject->numberTowords(($SUM-$DATA["lessbalance"]));
 			$query = "UPDATE `claim` SET 
 			claimTo='".$DATA['TO']."',
 			date='".$DATA['DATE']."',
@@ -1112,10 +1221,56 @@
 			lessAdvanceTaken=".$DATA['lessbalance'] .",
 			totalAssessmentFee=".$SUM.",
 			refundBalance=".($SUM-$DATA["lessbalance"]).",
+			amountInWords='".$amountInWords."',
 			status=0 WHERE claimID=".$claimID;
 			$result = $con->query($query);
 			mysqli_close($con);
 			return $result;
+		}
+		public function ImageBatchHeaderDetails($batch_number)
+		{
+			$myconnection =	new connection();
+			$con = $myconnection->getConnection();
+			$query = "SELECT * FROM image_batch WHERE batch_number=$batch_number LIMIT 1";
+			$result = $con->query($query);
+			return $result;
+		}
+		#------------------------------------------------------------------------------------------------
+		# Image Limit
+		#------------------------------------------------------------------------------------------------
+		public function CountImage($batch_number)
+		{
+			$myconnection = new connection();
+			$con = $myconnection->getConnection();
+			$query = "SELECT COUNT(ID) AS number FROM image_batch WHERE batch_number=$batch_number";
+			$result = $con->query($query);
+			$row = mysqli_fetch_assoc($result);
+			mysqli_close($con);
+			return $row['number'];
+		}
+		#-------------------------------------------------------------------------------------------------
+		# Claim Image
+		#-------------------------------------------------------------------------------------------------
+		public function CheckAllClaimImage($adhar)
+		{
+			$flag = 1;
+			$myconnection = new connection();
+			$con = $myconnection->getConnection();
+			$query = "SELECT ID FROM claim_batch WHERE adhar=$adhar AND claimId=-1";
+			$result = $con->query($query);
+			while($row=mysqli_fetch_assoc($result))
+			{
+				$temp_query = "SELECT COUNT(id) number FROM image_batch WHERE batch_number=".$row['ID'];
+				$temp_result = $con->query($temp_query);
+				$temp_row=mysqli_fetch_assoc($temp_result);
+				if($temp_row['number']<=0)
+				{
+					$flag = 0;
+					break;
+				}
+			}
+			mysqli_close($con);
+			return $flag;
 		}
 	}
 ?>

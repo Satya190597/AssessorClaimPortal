@@ -26,3 +26,20 @@ function addClaimValidation()
 		return true;
 	}
 }
+function enable(id)
+{
+	var batch = id+"batch";
+	var sector = id+"sector";
+	var trade = id+"trade";
+	var date = id+"date";
+	var candidate = id+"candidate";
+	var amount = id+"amount";
+	var update = id+"update";
+	document.getElementById(batch).disabled=!document.getElementById(batch).disabled;
+	document.getElementById(sector).disabled=!document.getElementById(sector).disabled;
+	document.getElementById(trade).disabled=!document.getElementById(trade).disabled;
+	document.getElementById(date).disabled=!document.getElementById(date).disabled;
+	document.getElementById(candidate).disabled=!document.getElementById(candidate).disabled;
+	document.getElementById(amount).disabled=!document.getElementById(amount).disabled;
+	document.getElementById(update).disabled=!document.getElementById(update).disabled;
+}

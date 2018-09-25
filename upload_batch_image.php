@@ -11,6 +11,25 @@
 		include_once 'class/controller.php';
 		$ID	=	$_GET['batch_id'];
 		$NUMBER = $_GET['batch_number'];
+		$obj = new accessorOperations();
+		$result = $obj->ImageBatchHeaderDetails($ID);
+		$num_rows = $result->num_rows;
+		$no_of_images = $obj->CountImage($ID);
+		if($num_rows>=1)
+		{
+			$row = mysqli_fetch_assoc($result);
+			$assessment_date = $row['assessment_date'];
+			$training_provider = $row['training_provider'];
+			$testing_center	=	$row['testing_center'];
+			$flag = "readonly";
+		}
+		else
+		{
+			$assessment_date = "";
+			$training_provider = "";
+			$testing_center = "";
+			$flag = "";
+		}
 		if(isset($_GET['event']) && isset($_GET['ID']))
 		{
 			if($_GET['event']=='delete')
@@ -49,26 +68,55 @@
 							</tr>
 							<tr>
 								<td><b>Assessment Date</b></td>
-								<td><input type="date" name="assessment_date" class="form-control" required /></td>
+								<td>
+									<input type="date" 
+									name="assessment_date" 
+									class="form-control" 
+									value="<?php echo $assessment_date; ?>"
+									required 
+									<?php echo $flag; ?> />
+								</td>
 							</tr>
 							<tr>
 								<td><b>Training Provider</b></td>
-								<td><input type="text" name="training_provider" class="form-control" required /></td>
+								<td>
+									<input type="text" 
+									name="training_provider" 
+									class="form-control" 
+									value="<?php echo $training_provider; ?>" 
+									required 
+									<?php echo $flag; ?>
+									/>
+								</td>
 							</tr>
 							<tr>
 								<td><b>Testing Center</b></td>
-								<td><input type="text" name="testing_center" class="form-control" required /></td>
+								<td>
+									<input type="text" 
+									name="testing_center" 
+									class="form-control" 
+									value="<?php echo $testing_center; ?>" 
+									required 
+									<?php echo $flag; ?>
+									/>
+								</td>
 							</tr>
 							<tr>
 								<td><b>Image</b></td>
 								<td>
-									<input type="file" name="imageupload" class="claim_pic"/><br>
+									<input type="file" name="imageupload" class="claim_pic" required/><br>
 									<strong class="pic_error" style="color:red">Image size must be less than 2MB and in jpeg format</strong>
 								</td>
 							</tr>
 							<tr>
-								<td colspan="2"><input type="submit" value="Add" class="btn btn-primary submit" />
-									<a href="home.php" class="btn btn-primary">Back To Home</a></td>
+								<td colspan="2">
+								<?php
+									if($no_of_images<=9)
+									{
+								?>
+								<input type="submit" value="Add" class="btn btn-primary submit" />
+								<?php }?>
+								<a href="home.php" class="btn btn-primary">Back To Home</a></td>
 							</tr>
 						</table>
 					</form>

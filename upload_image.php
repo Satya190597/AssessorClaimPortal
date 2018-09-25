@@ -3,12 +3,17 @@
 		<title>Upload Image</title>
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 		<?php
+			include_once 'connection/connection.php';
+			include_once 'class/controller.php';
 		    session_start();
 			if(isset($_SESSION["useradhar"]) || isset($_SESSION["adminid"]))
 			{
 				$adhar = $_SESSION["useradhar"];
 				$claimID = $_GET["claimID"];
 				$batchNo = $_GET["batchNo"];
+				$obj = new accessorOperations();
+				$result = $obj->ImageBatchHeaderDetails();
+				$num_rows = $result->num_rows;
 			}
 			else
 			{
@@ -142,6 +147,9 @@
 	</head>
 	<body>
 		<center>
+		<?php
+			echo $result;
+		?>
 		<form method="POST" action="upload_image_controller.php" onsubmit="return checkImage()" enctype="multipart/form-data">
 		<input type="hidden" value="<?php echo $claimID ?>" readonly="true" name="claim_id"/>
 		<div class="panel panel-primary" style="width:50%;margin-top:5%">
